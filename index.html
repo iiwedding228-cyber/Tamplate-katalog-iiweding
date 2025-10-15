@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iiwedding - Pusat Undangan Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom Configuration - EASILY EDITABLE */
+        :root {
+            --brand-name: "iiwedding";
+            --brand-tagline: "Pusat Undangan Digital";
+            --brand-description: "Buat momen spesialmu lebih berkesan dengan undangan digital yang elegan";
+            --logo-url: "https://i.ibb.co.com/tMhCh0FJ/Logo-Warna-2x-Kompres.png";
+            --whatsapp-link: "https://api.whatsapp.com/send?phone=6282138860484&text=Halo%20kak%20%F0%9F%A4%97%20Saya%20mau%20tanya%20tentang%20undangan%20digital%20iiwedding";
+            --instagram-link: "https://www.instagram.com/iiwedding_undangan_digital?igsh=MTZja2J5aTI3c3llbg==";
+            --bg-color: #e8fffb;
+            --accent-color: #06d2b3;
+            --text-color: #1f2937;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .accent-bg {
+            background-color: var(--accent-color);
+        }
+
+        .accent-text {
+            color: var(--accent-color);
+        }
+
+        .accent-border {
+            border-color: var(--accent-color);
+        }
+
+        .accent-hover:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        .accent-hover-reverse:hover {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .product-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #05b89f;
+        }
+
+        /* Lazy loading placeholder */
+        .lazy-image {
+            filter: blur(5px);
+            transition: filter 0.3s;
+        }
+
+        .lazy-image.loaded {
+            filter: blur(0);
+        }
+
+        /* Category pills */
+        .category-pill {
+            transition: all 0.3s ease;
+        }
+
+        .category-pill.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .category-pill:hover:not(.active) {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Pulse animation for floating WhatsApp button */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co.com/tMhCh0FJ/Logo-Warna-2x-Kompres.png" alt="Logo" class="h-10 w-auto">
+                    <span class="text-xl font-bold text-gray-800">iiwedding</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="text-gray-700 hover:text-accent transition-colors">Home</a>
+                    <a href="#fitur" class="text-gray-700 hover:text-accent transition-colors">Fitur</a>
+                    <a href="#katalog" class="text-gray-700 hover:text-accent transition-colors">Katalog</a>
+                    <a href="#catatan" class="text-gray-700 hover:text-accent transition-colors">Catatan</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#" class="block py-2 text-gray-700 hover:text-accent transition-colors">Home</a>
+                <a href="#fitur" class="block py-2 text-gray-700 hover:text-accent transition-colors">Fitur</a>
+                <a href="#katalog" class="block py-2 text-gray-700 hover:text-accent transition-colors">Katalog</a>
+                <a href="#catatan" class="block py-2 text-gray-700 hover:text-accent transition-colors">Catatan</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto text-center">
+            <div class="fade-in-up">
+                <img src="https://i.ibb.co.com/tMhCh0FJ/Logo-Warna-2x-Kompres.png" alt="Logo" class="h-24 w-auto mx-auto mb-6">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">iiwedding</h1>
+                <p class="text-2xl md:text-3xl mb-6 accent-text font-semibold">Pusat Undangan Digital</p>
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">Buat momen spesialmu lebih berkesan dengan undangan digital yang elegan</p>
+                
+                <!-- Social Links -->
+                <div class="flex justify-center space-x-4 mt-8">
+                    <a href="https://api.whatsapp.com/send?phone=6282138860484&text=Halo%20kak%20%F0%9F%A4%97%20Saya%20mau%20tanya%20tentang%20undangan%20digital%20iiwedding" target="_blank" class="accent-bg text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center space-x-2">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span class="text-sm font-medium">WhatsApp</span>
+                    </a>
+                    <a href="https://www.instagram.com/iiwedding_undangan_digital?igsh=MTZja2J5aTI3c3llbg==" target="_blank" class="accent-bg text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center space-x-2">
+                        <i class="fab fa-instagram text-xl"></i>
+                        <span class="text-sm font-medium">Instagram</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="fitur" class="py-16 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Fitur Undangan</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Fitur lengkap undangan website untuk memudahkan tamu undangan dan melengkapi keindahan pernikahan kamu</p>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-images text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Foto Galeri</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-clock text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Countdown Acara</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-heart text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Informasi Pengantin</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-map-marked-alt text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Peta Lokasi</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-music text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Request Musik</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-envelope-open-text text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Amplop Digital</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-qrcode text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">RSVP & QR Code</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-book text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Love Story</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-comments text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Ucapan & Do'a Restu</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-paper-plane text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Fitur Kirim Undangan</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-users text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Nama Tamu Unlimited</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md text-center">
+                    <i class="fas fa-video text-3xl mb-3 accent-text"></i>
+                    <p class="text-sm font-medium">Livestreaming Acara</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="katalog" class="py-16 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Katalog Undangan</h2>
+            
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Cari undangan..."
+                        class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-full focus:outline-none focus:border-accent"
+                    >
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12" id="categoryFilter">
+                <button class="category-pill active px-6 py-2 rounded-full border-2 accent-border accent-text hover:accent-bg hover:text-white" data-category="all" onclick="filterByCategory('all')">
+                    Semua
+                </button>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="productGrid">
+                <!-- Products will be loaded here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-center mt-8" id="pagination">
+                <!-- Pagination buttons will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Notes Section -->
+    <section id="catatan" class="py-16 px-4">
+        <div class="container mx-auto max-w-4xl">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gradient-to-br from-purple-600 to-indigo-600 p-8 rounded-xl shadow-lg text-white text-center">
+                    <div class="flex justify-center mb-4">
+                        <i class="fas fa-info-circle text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">CATATAN</h3>
+                    <p class="text-sm leading-relaxed">
+                        Waktu pengerjaan 3-7 hari tergantung banyaknya antrian. Namun khusus yang ada label "kilat" bisa kurang dari 3 hari pengerjaan. Gratis revisi 3x kali. Selebihnya ada biaya tambahan 15k
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-red-600 to-pink-600 p-8 rounded-xl shadow-lg text-white text-center">
+                    <div class="flex justify-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">PERHATIAN</h3>
+                    <p class="text-sm leading-relaxed">
+                        Untuk tampilan terbaik, mohon untuk menggunakan Browser Chrome / Safari. Karena tampilan tema desain tidak mendukung browser bawaan HP atau Dark Mode (Mode Malam).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send?phone=6282138860484&text=Halo%20kak%20%F0%9F%A4%97%20Saya%20mau%20tanya%20tentang%20undangan%20digital%20iiwedding" 
+       target="_blank" 
+       class="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 pulse-animation">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4">
+        <div class="container mx-auto text-center">
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="https://api.whatsapp.com/send?phone=6282138860484&text=Halo%20kak%20%F0%9F%A4%97%20Saya%20mau%20tanya%20tentang%20undangan%20digital%20iiwedding" target="_blank" class="hover:text-accent transition-colors">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </a>
+                <a href="https://www.instagram.com/iiwedding_undangan_digital?igsh=MTZja2J5aTI3c3llbg==" target="_blank" class="hover:text-accent transition-colors">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+            </div>
+            <p>&copy; 2024 iiwedding. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Make filterByCategory globally accessible
+        function filterByCategory(category) {
+            console.log('Filter clicked:', category); // Debug log
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-pill').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderProducts();
+        }
+
+        // Product Data from CSV
+        const products = [
+            { nama: "Sunda 1", kategori: "Adat", preview: "https://app.smstory.id/pilihan-tema/sunda-01?sr=iiwedding", gambar: "https://i.ibb.co.com/Rkjn0dzm/01-Sunda-01.png", keterangan: "" },
+            { nama: "Jawa 1", kategori: "Adat", preview: "https://app.smstory.id/pilihan-tema/jawa-01?sr=iiwedding", gambar: "https://i.ibb.co.com/hR9CbpDv/02-Jawa-01.png", keterangan: "" },
+            { nama: "Minang 1", kategori: "Adat", preview: "https://app.smstory.id/pilihan-tema/minang-01?sr=iiwedding", gambar: "https://i.ibb.co.com/m5j4cHNw/03-Minang-01.png", keterangan: "" },
+            { nama: "Psh-01", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/psh-01?sr=iiwedding", gambar: "https://i.ibb.co.com/5XRf9vBY/04-PSH-01.png", keterangan: "" },
+            { nama: "Psh-02", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/psh-02?sr=iiwedding", gambar: "https://i.ibb.co.com/3Y0jpsCD/05-PSH-02.png", keterangan: "" },
+            { nama: "Psh-03", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/psh-03?sr=iiwedding", gambar: "https://i.ibb.co.com/h116tDrh/06-PSH-03.png", keterangan: "" },
+            { nama: "Psh-04", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/psh-04?sr=iiwedding", gambar: "https://i.ibb.co.com/cKt19Xp2/07-PSH-04.png", keterangan: "" },
+            { nama: "Psh-05", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/psh-05?sr=iiwedding", gambar: "https://i.ibb.co.com/k2rQstdR/08-PSH-05.png", keterangan: "" },
+            { nama: "Psh-06", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/psh-06?sr=iiwedding", gambar: "https://i.ibb.co.com/pBhwF7mm/09-PSH-06.png", keterangan: "" },
+            { nama: "Mss-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/mss-01?sr=iiwedding", gambar: "https://i.ibb.co.com/bMMcrbQB/10-MSS-01.png", keterangan: "" },
+            { nama: "Mss-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/mss-02?sr=iiwedding", gambar: "https://i.ibb.co.com/QjJfc6YT/11-MSS-02.png", keterangan: "" },
+            { nama: "Mss-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/mss-03?sr=iiwedding", gambar: "https://i.ibb.co.com/FbgYwBvF/12-MSS-03.png", keterangan: "" },
+            { nama: "Mss-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/mss-04?sr=iiwedding", gambar: "https://i.ibb.co.com/C56W3S35/13-MSS-04.png", keterangan: "" },
+            { nama: "Mss-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/mss-05?sr=iiwedding", gambar: "https://i.ibb.co.com/GvbzYZgH/14-MSS-05.png", keterangan: "" },
+            { nama: "Mss-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/mss-06?sr=iiwedding", gambar: "https://i.ibb.co.com/84xGkZWj/15-MSS-06.png", keterangan: "" },
+            { nama: "Nursa-01", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/nursa-01?sr=iiwedding", gambar: "https://i.ibb.co.com/8DyrSdCL/16-Nursa-01.png", keterangan: "" },
+            { nama: "Nursa-02", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/nursa-02?sr=iiwedding", gambar: "https://i.ibb.co.com/qPj7k5y/17-Nursa-02.png", keterangan: "" },
+            { nama: "Nursa-03", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/nursa-03?sr=iiwedding", gambar: "https://i.ibb.co.com/fRsRDzD/18-Nursa-03.png", keterangan: "" },
+            { nama: "Nursa-04", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/nursa-04?sr=iiwedding", gambar: "https://i.ibb.co.com/vCQmZqRN/19-Nursa-04.png", keterangan: "" },
+            { nama: "Nursa-05", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/nursa-05?sr=iiwedding", gambar: "https://i.ibb.co.com/rK7n8VKy/20-Nursa-05.png", keterangan: "" },
+            { nama: "Nursa-06", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/nursa-06?sr=iiwedding", gambar: "https://i.ibb.co.com/G35B0SC9/21-Nursa-06.png", keterangan: "" },
+            { nama: "Love-Cartoon-01", kategori: "Islami", preview: "https://app.smstory.id/pilihan-tema/love-cartoon-01?sr=iiwedding", gambar: "https://i.ibb.co.com/G48JPDpz/22-LOVE-CARTOON-01.png", keterangan: "" },
+            { nama: "Love-Cartoon-02", kategori: "Islami", preview: "https://app.smstory.id/pilihan-tema/love-cartoon-02?sr=iiwedding", gambar: "https://i.ibb.co.com/gMhFfnJR/23-LOVE-CARTOON-02.png", keterangan: "" },
+            { nama: "Love-Cartoon-03", kategori: "Islami", preview: "https://app.smstory.id/pilihan-tema/love-cartoon-03?sr=iiwedding", gambar: "https://i.ibb.co.com/WNtP6vmJ/24-LOVE-CARTOON-03.png", keterangan: "" },
+            { nama: "Butterfly-Fx-01", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/butterfly-fx-01?sr=iiwedding", gambar: "https://i.ibb.co.com/Vc8F6Spy/25-Butterfly-FX-01.png", keterangan: "" },
+            { nama: "Butterfly-Fx-02", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/butterfly-fx-02?sr=iiwedding", gambar: "https://i.ibb.co.com/x8LCydnK/26-Butterfly-FX-02.png", keterangan: "" },
+            { nama: "Butterfly-Fx-03", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/butterfly-fx-03?sr=iiwedding", gambar: "https://i.ibb.co.com/K8bwBQ7/27-Butterfly-FX-03.png", keterangan: "" },
+            { nama: "Swn-01", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-01?sr=iiwedding", gambar: "https://i.ibb.co.com/WNjybWKS/28-SWN-01.png", keterangan: "" },
+            { nama: "Swn-02", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-02?sr=iiwedding", gambar: "https://i.ibb.co.com/2mgTnQy/29-SWN-02.png", keterangan: "" },
+            { nama: "Swn-03", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-03?sr=iiwedding", gambar: "https://i.ibb.co.com/C5GcrjDj/30-SWN-03.png", keterangan: "" },
+            { nama: "Swn-04", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-04?sr=iiwedding", gambar: "https://i.ibb.co.com/mFFBGxQH/31-SWN-04.png", keterangan: "" },
+            { nama: "Swn-05", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-05?sr=iiwedding", gambar: "https://i.ibb.co.com/TxZd7kwD/32-SWN-05.png", keterangan: "" },
+            { nama: "Swn-06", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-06?sr=iiwedding", gambar: "https://i.ibb.co.com/prWpcvS9/33-SWN-06.png", keterangan: "" },
+            { nama: "Swn-07", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-07?sr=iiwedding", gambar: "https://i.ibb.co.com/4Zw1KHhX/34-SWN-07.png", keterangan: "" },
+            { nama: "Swn-08", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-08?sr=iiwedding", gambar: "https://i.ibb.co.com/WNB6Xwtr/35-SWN-08.png", keterangan: "" },
+            { nama: "Swn-09", kategori: "Elegant", preview: "https://app.smstory.id/pilihan-tema/swn-09?sr=iiwedding", gambar: "https://i.ibb.co.com/99BxCF6q/36-SWN-09.png", keterangan: "" },
+            { nama: "Wavy-Sfe-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-01?sr=iiwedding", gambar: "https://i.ibb.co.com/v4g3JRQS/37-Wavy-SFE-01.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-02?sr=iiwedding", gambar: "https://i.ibb.co.com/cckMnfJ1/38-Wavy-SFE-02.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-03?sr=iiwedding", gambar: "https://i.ibb.co.com/LXQmRSyL/39-Wavy-SFE-03.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-04?sr=iiwedding", gambar: "https://i.ibb.co.com/Ngs3rSDB/40-Wavy-SFE-04.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-05?sr=iiwedding", gambar: "https://i.ibb.co.com/fVGdtpGg/41-Wavy-SFE-05.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-06?sr=iiwedding", gambar: "https://i.ibb.co.com/1YWVrD1w/42-Wavy-SFE-06.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-07", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-07?sr=iiwedding", gambar: "https://i.ibb.co.com/qMBVdLzk/43-Wavy-SFE-07.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-08", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-08?sr=iiwedding", gambar: "https://i.ibb.co.com/LhzSNLQG/44-Wavy-SFE-08.jpg", keterangan: "" },
+            { nama: "Wavy-Sfe-09", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/wavy-sfe-09?sr=iiwedding", gambar: "https://i.ibb.co.com/HfhHYFTj/45-Wavy-SFE-09.jpg", keterangan: "" },
+            { nama: "Aqiqah-Givemeart-Mks-01", kategori: "Aqiqah", preview: "https://app.smstory.id/pilihan-tema/aqiqah-givemeart-mks-01?sr=iiwedding", gambar: "https://i.ibb.co.com/x8fqPbyY/46-Aqiqah-Givemeart-Mks-01.png", keterangan: "" },
+            { nama: "Aqiqah-Givemeart-Mks-02", kategori: "Aqiqah", preview: "https://app.smstory.id/pilihan-tema/aqiqah-givemeart-mks-02?sr=iiwedding", gambar: "https://i.ibb.co.com/7ddDmpSM/47-Aqiqah-Givemeart-Mks-02.png", keterangan: "" },
+            { nama: "Aqiqah-Givemeart-Mks-03", kategori: "Aqiqah", preview: "https://app.smstory.id/pilihan-tema/aqiqah-givemeart-mks-03?sr=iiwedding", gambar: "https://i.ibb.co.com/k24BSrFb/48-Aqiqah-Givemeart-Mks-03.png", keterangan: "" },
+            { nama: "Ethnic-Sm-01", kategori: "Batik", preview: "https://app.smstory.id/pilihan-tema/ethnic-sm-01?sr=iiwedding", gambar: "https://i.ibb.co.com/B5MvMMRV/49-Ethnic-SM-01.jpg", keterangan: "" },
+            { nama: "Ethnic-Sm-02", kategori: "Batik", preview: "https://app.smstory.id/pilihan-tema/ethnic-sm-02?sr=iiwedding", gambar: "https://i.ibb.co.com/99ZWzZYb/50-Ethnic-SM-02.jpg", keterangan: "" },
+            { nama: "Ethnic-Sm-03", kategori: "Batik", preview: "https://app.smstory.id/pilihan-tema/ethnic-sm-03?sr=iiwedding", gambar: "https://i.ibb.co.com/Z6QpLn2F/51-Ethnic-SM-03.jpg", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-01?sr=iiwedding", gambar: "https://i.ibb.co.com/KpBGLwwT/52-Autoplay-Floral-Dance-01.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-02?sr=iiwedding", gambar: "https://i.ibb.co.com/PffKr5C/53-Autoplay-Floral-Dance-02.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-03?sr=iiwedding", gambar: "https://i.ibb.co.com/TfXFZh0/54-Autoplay-Floral-Dance-03.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-04?sr=iiwedding", gambar: "https://i.ibb.co.com/TM8stBsV/55-Autoplay-Floral-Dance-04.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-05?sr=iiwedding", gambar: "https://i.ibb.co.com/DS2tLr3/56-Autoplay-Floral-Dance-05.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-06?sr=iiwedding", gambar: "https://i.ibb.co.com/B2LSH5D6/57-Autoplay-Floral-Dance-06.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-07", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-07?sr=iiwedding", gambar: "https://i.ibb.co.com/gbgV4kc9/58-Autoplay-Floral-Dance-07.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-08", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-08?sr=iiwedding", gambar: "https://i.ibb.co.com/q3c0JJvZ/59-Autoplay-Floral-Dance-08.png", keterangan: "" },
+            { nama: "Autoplay-Floral-Dance-09", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/autoplay-floral-dance-09?sr=iiwedding", gambar: "https://i.ibb.co.com/rKrfrvZT/60-Autoplay-Floral-Dance-09.png", keterangan: "" },
+            { nama: "Full-Pattern-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/full-pattern-01?sr=iiwedding", gambar: "https://i.ibb.co.com/rRnBdJ7b/61-Full-Pattern-01.jpg", keterangan: "" },
+            { nama: "Full-Pattern-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/full-pattern-02?sr=iiwedding", gambar: "https://i.ibb.co.com/WmQKfMZ/62-Full-Pattern-02.jpg", keterangan: "" },
+            { nama: "Full-Pattern-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/full-pattern-03?sr=iiwedding", gambar: "https://i.ibb.co.com/vnfkWq2/63-Full-Pattern-03.jpg", keterangan: "" },
+            { nama: "Full-Pattern-Sfe-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/full-pattern-sfe-04?sr=iiwedding", gambar: "https://i.ibb.co.com/21Cj27Pq/64-Full-Pattern-04.jpg", keterangan: "" },
+            { nama: "Full-Pattern-Sfe-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/full-pattern-sfe-05?sr=iiwedding", gambar: "https://i.ibb.co.com/G31x8Zvx/65-Full-Pattern-05.jpg", keterangan: "" },
+            { nama: "Full-Pattern-Sfe-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/full-pattern-sfe-06?sr=iiwedding", gambar: "https://i.ibb.co.com/HT1FSZpt/66-Full-Pattern-06.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-01?sr=iiwedding", gambar: "https://i.ibb.co.com/S75Ng3hh/67-Snowflakes-Effect-01.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-02?sr=iiwedding", gambar: "https://i.ibb.co.com/993XDWhg/68-Snowflakes-Effect-02.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-03?sr=iiwedding", gambar: "https://i.ibb.co.com/twpVmGww/69-Snowflakes-Effect-03.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-04?sr=iiwedding", gambar: "https://i.ibb.co.com/ZR55BGvK/70-Snowflakes-Effect-04.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-05?sr=iiwedding", gambar: "https://i.ibb.co.com/RTQP93P5/71-Snowflakes-Effect-05.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-06?sr=iiwedding", gambar: "https://i.ibb.co.com/DPBSY7w8/72-Snowflakes-Effect-06.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-07", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-07?sr=iiwedding", gambar: "https://i.ibb.co.com/LhYJjQ8D/73-Snowflakes-Effect-07.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-08", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-08?sr=iiwedding", gambar: "https://i.ibb.co.com/b5KzcXxT/74-Snowflakes-Effect-08.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-09", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-09?sr=iiwedding", gambar: "https://i.ibb.co.com/LzyWS0Qf/75-Snowflakes-Effect-09.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-10", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-10?sr=iiwedding", gambar: "https://i.ibb.co.com/4ZTcHR3t/76-Snowflakes-Effect-10.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-11", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-11?sr=iiwedding", gambar: "https://i.ibb.co.com/xqPVvSXX/77-Snowflakes-Effect-11.jpg", keterangan: "" },
+            { nama: "Snowflakes-Effect-12", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/snowflakes-effect-12?sr=iiwedding", gambar: "https://i.ibb.co.com/C5YrQmMw/78-Snowflakes-Effect-12.jpg", keterangan: "" },
+            { nama: "Wide-01", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/wide-01?sr=iiwedding", gambar: "https://i.ibb.co.com/kVxRwgdg/79-Wide-01.jpg", keterangan: "" },
+            { nama: "Wide-02", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/wide-02?sr=iiwedding", gambar: "https://i.ibb.co.com/fzrtxBLP/80-Wide-02.jpg", keterangan: "" },
+            { nama: "Wide-03", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/wide-03?sr=iiwedding", gambar: "https://i.ibb.co.com/G3pRHKmR/81-Wide-03.jpg", keterangan: "" },
+            { nama: "Wide-04", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/wide-04?sr=iiwedding", gambar: "https://i.ibb.co.com/nNN1WNQb/82-Wide-04.jpg", keterangan: "" },
+            { nama: "Wide-05", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/wide-05?sr=iiwedding", gambar: "https://i.ibb.co.com/SDg6VTRB/83-Wide-05.jpg", keterangan: "" },
+            { nama: "Wide-06", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/wide-06?sr=iiwedding", gambar: "https://i.ibb.co.com/Q70DJnzY/84-Wide-06.jpg", keterangan: "" },
+            { nama: "Sm-01", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-01?sr=iiwedding", gambar: "https://i.ibb.co.com/N6H2rvth/85-SM-01.jpg", keterangan: "" },
+            { nama: "Sm-02", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-02?sr=iiwedding", gambar: "https://i.ibb.co.com/XwZCMyD/86-SM-02.jpg", keterangan: "" },
+            { nama: "Sm-03", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-03?sr=iiwedding", gambar: "https://i.ibb.co.com/9kyR3gr0/87-SM-03.jpg", keterangan: "" },
+            { nama: "Sm-04", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-04?sr=iiwedding", gambar: "https://i.ibb.co.com/GQTk0bwf/88-SM-04.jpg", keterangan: "" },
+            { nama: "Sm-05", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-05?sr=iiwedding", gambar: "https://i.ibb.co.com/CpmgwV6h/89-SM-05.jpg", keterangan: "" },
+            { nama: "Sm-06", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-06?sr=iiwedding", gambar: "https://i.ibb.co.com/4xjKBYd/90-SM-06.jpg", keterangan: "" },
+            { nama: "Sm-07", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-07?sr=iiwedding", gambar: "https://i.ibb.co.com/8nvffsF4/91-SM-07.jpg", keterangan: "" },
+            { nama: "Sm-08", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-08?sr=iiwedding", gambar: "https://i.ibb.co.com/YTwrqF9T/92-SM-08.jpg", keterangan: "" },
+            { nama: "Sm-09", kategori: "Alam", preview: "https://app.smstory.id/pilihan-tema/sm-09?sr=iiwedding", gambar: "https://i.ibb.co.com/hxNzxQT0/93-SM-09.jpg", keterangan: "" },
+            { nama: "Card-01-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/card-01-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/Gfd8QR8V/94-Card-01-MV.jpg", keterangan: "" },
+            { nama: "Card-02Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/card-02-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/BKf7fQwX/95-Card-02-MV.jpg", keterangan: "" },
+            { nama: "Card-03-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/card-03-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/dwN3bnTH/96-Card-03-MV.jpg", keterangan: "" },
+            { nama: "Card-04-Mv-Full-Dark", kategori: "Dark", preview: "https://app.smstory.id/pilihan-tema/card-04-mv-full-dark?sr=iiwedding", gambar: "https://i.ibb.co.com/4ZfZ3VxZ/97-Card-04-MV-Full-Dark.jpg", keterangan: "" },
+            { nama: "Card-05-Mv-Full-Dark", kategori: "Dark", preview: "https://app.smstory.id/pilihan-tema/card-05-mv-full-dark?sr=iiwedding", gambar: "https://i.ibb.co.com/23HvcdSS/98-Card-05-MV-Full-Dark.jpg", keterangan: "" },
+            { nama: "Card-06-Mv-Full-Dark", kategori: "Dark", preview: "https://app.smstory.id/pilihan-tema/card-06-mv-full-dark?sr=iiwedding", gambar: "https://i.ibb.co.com/zHmghKMW/99-Card-06-MV-Full-Dark.jpg", keterangan: "" },
+            { nama: "Boxed-01-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/boxed-01-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/1tnNSgKj/100-Boxed-01-MV.jpg", keterangan: "" },
+            { nama: "Boxed-02-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/boxed-02-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/S7V9y9KK/101-Boxed-02-MV.jpg", keterangan: "" },
+            { nama: "Boxed-03-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/boxed-03-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/27kjKf2n/102-Boxed-03-MV.jpg", keterangan: "" },
+            { nama: "Boxed-04-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/boxed-04-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/q398LjbD/103-Boxed-04-MV.jpg", keterangan: "" },
+            { nama: "Boxed-05-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/boxed-05-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/23Cb4Sph/104-Boxed-05-MV.jpg", keterangan: "" },
+            { nama: "Boxed-06-Mv", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/boxed-06-mv?sr=iiwedding", gambar: "https://i.ibb.co.com/wZQT0pT6/105-Boxed-06-MV.jpg", keterangan: "" },
+            { nama: "Frame-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-01?sr=iiwedding", gambar: "https://i.ibb.co.com/TqLY1VLQ/106-Frame-01.jpg", keterangan: "" },
+            { nama: "Frame-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-02?sr=iiwedding", gambar: "https://i.ibb.co.com/zWcMcpN2/107-Frame-02.jpg", keterangan: "" },
+            { nama: "Frame-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-03?sr=iiwedding", gambar: "https://i.ibb.co.com/dwVrQQP6/108-Frame-03.jpg", keterangan: "" },
+            { nama: "Frame-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-04?sr=iiwedding", gambar: "https://i.ibb.co.com/GQ42Twcc/109-Frame-04.jpg", keterangan: "" },
+            { nama: "Frame-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-05?sr=iiwedding", gambar: "https://i.ibb.co.com/xqRwsrBx/110-Frame-05.jpg", keterangan: "" },
+            { nama: "Frame-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-06?sr=iiwedding", gambar: "https://i.ibb.co.com/1ffdnPsZ/111-Frame-06.jpg", keterangan: "" },
+            { nama: "Frame-07", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-07?sr=iiwedding", gambar: "https://i.ibb.co.com/933j6Qd9/112-Frame-07.jpg", keterangan: "" },
+            { nama: "Frame-08", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-08?sr=iiwedding", gambar: "https://i.ibb.co.com/KxrX7nkv/113-Frame-08.jpg", keterangan: "" },
+            { nama: "Frame-09", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/frame-09?sr=iiwedding", gambar: "https://i.ibb.co.com/SXjfqj5j/114-Frame-09.jpg", keterangan: "" },
+            { nama: "Simple-Corner-01", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/simple-corner-01?sr=iiwedding", gambar: "https://i.ibb.co.com/h1wHLHNB/115-Simple-Corner-01.jpg", keterangan: "" },
+            { nama: "Simple-Corner-02", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/simple-corner-02?sr=iiwedding", gambar: "https://i.ibb.co.com/5gR50grM/116-Simple-Corner-02.jpg", keterangan: "" },
+            { nama: "Simple-Corner-03", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/simple-corner-03?sr=iiwedding", gambar: "https://i.ibb.co.com/cSMzm1yc/117-Simple-Corner-03.jpg", keterangan: "" },
+            { nama: "Simple-Corner-04", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/simple-corner-04?sr=iiwedding", gambar: "https://i.ibb.co.com/0pjtnMzr/118-Simple-Corner-04.jpg", keterangan: "" },
+            { nama: "Simple-Corner-05", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/simple-corner-05?sr=iiwedding", gambar: "https://i.ibb.co.com/bgTxSjWG/119-Simple-Corner-05.jpg", keterangan: "" },
+            { nama: "Simple-Corner-06", kategori: "Bunga", preview: "https://app.smstory.id/pilihan-tema/simple-corner-06?sr=iiwedding", gambar: "https://i.ibb.co.com/B2WYqSgS/120-Simple-Corner-06.jpg", keterangan: "" },
+            { nama: "Netflix", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-netflix/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/07/tema-netflix-thumb.jpg", keterangan: "Fast" },
+            { nama: "The Lux 1", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-the-lux-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux1.webp", keterangan: "Fast" },
+            { nama: "The Lux 2", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-2/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux2.webp", keterangan: "Fast" },
+            { nama: "The Lux 3", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-3/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux3.webp", keterangan: "Fast" },
+            { nama: "The Lux 4", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-4/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux4.webp", keterangan: "Fast" },
+            { nama: "The Lux 5", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-5/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux5.webp", keterangan: "Fast" },
+            { nama: "The Lux 6", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-6/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux6.webp", keterangan: "Fast" },
+            { nama: "The Lux 7", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-7/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux7.webp", keterangan: "Fast" },
+            { nama: "The Lux 8", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-8/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/05/lux8.webp", keterangan: "Fast" },
+            { nama: "The Lux 9", kategori: "Luxury", preview: "https://invite.truelove.my.id/tema-lux-9/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Lux-9-1.webp", keterangan: "Fast" },
+            { nama: "The Lux 10", kategori: "Luxury", preview: "https://invite.truelove.my.id/temea-lux-10/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Lux10.webp", keterangan: "Fast" },
+            { nama: "Jawa 2", kategori: "Adat", preview: "https://invite.truelove.my.id/adat-jawa-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/temajawa1.jpg", keterangan: "Fast" },
+            { nama: "Jawa 3", kategori: "Adat", preview: "https://invite.truelove.my.id/adat-jawa-2/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/adat-jawa-2.jpg", keterangan: "Fast" },
+            { nama: "Jawa 4", kategori: "Adat", preview: "https://invite.truelove.my.id/tema-jawa-3/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/ADAT-JAWA-3.jpg", keterangan: "Fast" },
+            { nama: "Sunda 2", kategori: "Adat", preview: "https://invite.truelove.my.id/sunda-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/ADAT-SUNDA.jpg", keterangan: "Fast" },
+            { nama: "Batak 1", kategori: "Adat", preview: "https://invite.truelove.my.id/tema-adat-batak-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/temabatak1.jpg", keterangan: "Fast" },
+            { nama: "Betawi 1", kategori: "Adat", preview: "https://invite.truelove.my.id/betawi-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/betawi-1.jpg", keterangan: "Fast" },
+            { nama: "Dayak 1", kategori: "Adat", preview: "https://invite.truelove.my.id/dayak-1/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/temadayak1.jpg", keterangan: "Fast" },
+            { nama: "Minang 2", kategori: "Adat", preview: "https://invite.truelove.my.id/minang-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/temaminang1.jpg", keterangan: "Fast" },
+            { nama: "Nias 1", kategori: "Adat", preview: "https://invite.truelove.my.id/adat-nias-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/ADAT-NIAS.jpg", keterangan: "Fast" },
+            { nama: "Bali 1", kategori: "Adat", preview: "https://invite.truelove.my.id/adat-bali-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/adat-Bali.jpg", keterangan: "Fast" },
+            { nama: "Japanese Sakura", kategori: "Adat", preview: "https://invite.truelove.my.id/hanami-sakura/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/hanami-sakura.jpg", keterangan: "Fast" },
+            { nama: "Japanese Hanaui Sarang", kategori: "Adat", preview: "https://invite.truelove.my.id/hanaui-sarang/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/hanuisarang.jpg", keterangan: "Fast" },
+            { nama: "Amethyst Dream", kategori: "3D Motion", preview: "https://invite.truelove.my.id/wedding-amethyst-dream/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Midnight-04-Large.jpeg", keterangan: "Fast" },
+            { nama: "Crimson Romance", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-crimson-romance/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Midnight-03-Large.jpeg", keterangan: "Fast" },
+            { nama: "Crimson Tanpa Foto", kategori: "3D Motion", preview: "https://invite.truelove.my.id/crimson-tanpa-foto/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Midnight-03-Large.jpeg", keterangan: "Fast" },
+            { nama: "Emerald Romance", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-emerald-romance/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Midnight-05-Large.jpeg", keterangan: "Fast" },
+            { nama: "Midnight Garden", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-midnight-garden/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Midnight-01-Large.jpeg", keterangan: "Fast" },
+            { nama: "Motion Islamic 1", kategori: "3D Motion", preview: "https://invite.truelove.my.id/islamic-motion-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/09/Mockup-Elemenpress-Islamic-01-Large.jpeg", keterangan: "Fast" },
+            { nama: "Motion Islamic 2", kategori: "3D Motion", preview: "https://invite.truelove.my.id/islamic-motion-2/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/09/Mockup-Elemenpress-Islamic-02-Large.jpeg", keterangan: "Fast" },
+            { nama: "Motion Islamic 3", kategori: "3D Motion", preview: "https://invite.truelove.my.id/islamic-motion-3/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/09/Mockup-Elemenpress-Islamic-03-Large.jpeg", keterangan: "Fast" },
+            { nama: "Motion Islamic 4", kategori: "3D Motion", preview: "https://invite.truelove.my.id/islamic-motion-4/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/09/Mockup-Elemenpress-Islamic-04-Large.jpeg", keterangan: "Fast" },
+            { nama: "Motion Islamic 5", kategori: "3D Motion", preview: "https://invite.truelove.my.id/islamic-motion-5/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/09/Mockup-Elemenpress-Islamic-05-Large.jpeg", keterangan: "Fast" },
+            { nama: "Royal Twilight", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-royal-twilight/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Midnight-02-Large.jpeg", keterangan: "Fast" },
+            { nama: "3D Adat Bali", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-adat-bali/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/08/adatbali3d.jpg", keterangan: "Fast" },
+            { nama: "3D Adat Batak", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-adat-batak", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/08/adatbatak3d.jpg", keterangan: "Fast" },
+            { nama: "3D Adat Betawi", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-adat-betawi/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/10/MOCKUP-Heritage-Vol-2-Betawi-Large.jpeg", keterangan: "Fast" },
+            { nama: "3D Adat Bugis", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-adat-bugis-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/08/Adatbugis.jpg", keterangan: "Fast" },
+            { nama: "3D Adat Jawa", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-motion-jawa-1/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/07/thumb-3djawa.jpeg", keterangan: "Fast" },
+            { nama: "3D Adat Palembang", kategori: "3D Motion", preview: "https://invite.truelove.my.id/3d-motion-adat-palembang/", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/09/MOCKUP-Heritage-Vol-2-Palembang-Large.jpeg", keterangan: "Fast" },
+            { nama: "Basic 1", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-1.jpg", keterangan: "Fast" },
+            { nama: "Basic 2", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-2/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-2.jpg", keterangan: "Fast" },
+            { nama: "Basic 3", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-3/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-3.jpg", keterangan: "Fast" },
+            { nama: "Basic 4", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-4/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-4.jpg", keterangan: "Fast" },
+            { nama: "Basic 5", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-5/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-5.jpg", keterangan: "Fast" },
+            { nama: "Basic 6", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-6/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-6.jpg", keterangan: "Fast" },
+            { nama: "Basic 7", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-7/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-7.jpg", keterangan: "Fast" },
+            { nama: "Basic 8", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-8/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-8.jpg", keterangan: "Fast" },
+            { nama: "Basic 9", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-9/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-9.jpg", keterangan: "Fast" },
+            { nama: "Basic 10", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-10/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Bassic-10.jpg", keterangan: "Fast" },
+            { nama: "Basic 11", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-11/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/bassic-11.jpg", keterangan: "Fast" },
+            { nama: "Basic 12", kategori: "Basic", preview: "https://invite.truelove.my.id/tema-bassic-12/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/bassic-12.jpg", keterangan: "Fast" },
+            { nama: "Syar'i 1", kategori: "Islami", preview: "https://invite.truelove.my.id/tema-syari-1/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Syari-1.jpg", keterangan: "Fast" },
+            { nama: "Syar'i 2", kategori: "Islami", preview: "https://invite.truelove.my.id/tema-syari-2/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Syari-2.jpg", keterangan: "Fast" },
+            { nama: "Syar'i 3", kategori: "Islami", preview: "https://invite.truelove.my.id/tema-syari-3/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Syari-3.jpg", keterangan: "Fast" },
+            { nama: "Syar'i 4", kategori: "Islami", preview: "https://invite.truelove.my.id/tema-syari-4/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Syari-4.jpg", keterangan: "Fast" },
+            { nama: "Syar'i 5", kategori: "Islami", preview: "https://invite.truelove.my.id/tema-syari-5/?to=Nama+Tamu", gambar: "https://invite.truelove.my.id/wp-content/uploads/2025/06/Syari-5.jpg", keterangan: "Fast" }
+        ];
+
+        let currentCategory = 'all';
+        let searchTerm = '';
+        let currentPage = 1;
+        const productsPerPage = 20;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCategories();
+            renderProducts();
+            setupEventListeners();
+            setupLazyLoading();
+            
+            // Add event listener for "Semua" filter
+            const semuaButton = document.querySelector('[data-category="all"]');
+            if (semuaButton) {
+                semuaButton.addEventListener('click', () => filterByCategory('all'));
+            }
+        });
+
+        // Initialize category filter buttons
+        function initializeCategories() {
+            const categories = [...new Set(products.map(p => p.kategori))];
+            const categoryFilter = document.getElementById('categoryFilter');
+            
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'category-pill px-6 py-2 rounded-full border-2 accent-border accent-text hover:accent-bg hover:text-white';
+                button.textContent = category;
+                button.dataset.category = category;
+                button.addEventListener('click', () => filterByCategory(category));
+                categoryFilter.appendChild(button);
+            });
+        }
+
+        // Render products to grid
+        function renderProducts() {
+            const productGrid = document.getElementById('productGrid');
+            const filteredProducts = filterProducts();
+            
+            // Reset to page 1 when category or search changes
+            currentPage = 1;
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const currentProducts = filteredProducts.slice(startIndex, endIndex);
+            
+            productGrid.innerHTML = '';
+            
+            currentProducts.forEach((product, index) => {
+                const productCard = createProductCard(product, index);
+                productGrid.appendChild(productCard);
+            });
+            
+            // Render pagination
+            renderPagination(totalPages);
+            
+            // Trigger animation for visible cards
+            setTimeout(() => {
+                document.querySelectorAll('.product-card').forEach(card => {
+                    if (isElementInViewport(card)) {
+                        card.classList.add('visible');
+                    }
+                });
+            }, 100);
+        }
+
+        // Render pagination buttons
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3 py-2 mx-1 rounded-lg ${currentPage === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'accent-bg text-white hover:opacity-90'}`;
+            prevBtn.textContent = '←';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProductsPage();
+                }
+            };
+            pagination.appendChild(prevBtn);
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `px-3 py-2 mx-1 rounded-lg ${i === currentPage ? 'accent-bg text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => {
+                    currentPage = i;
+                    renderProductsPage();
+                };
+                pagination.appendChild(pageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3 py-2 mx-1 rounded-lg ${currentPage === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'accent-bg text-white hover:opacity-90'}`;
+            nextBtn.textContent = '→';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProductsPage();
+                }
+            };
+            pagination.appendChild(nextBtn);
+        }
+
+        // Render products for current page (without resetting pagination)
+        function renderProductsPage() {
+            const productGrid = document.getElementById('productGrid');
+            const filteredProducts = filterProducts();
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const currentProducts = filteredProducts.slice(startIndex, endIndex);
+            
+            productGrid.innerHTML = '';
+            
+            currentProducts.forEach((product, index) => {
+                const productCard = createProductCard(product, index);
+                productGrid.appendChild(productCard);
+            });
+            
+            // Render pagination
+            renderPagination(totalPages);
+            
+            // Scroll to top of product grid
+            document.getElementById('katalog').scrollIntoView({ behavior: 'smooth' });
+            
+            // Trigger animation for visible cards
+            setTimeout(() => {
+                document.querySelectorAll('.product-card').forEach(card => {
+                    if (isElementInViewport(card)) {
+                        card.classList.add('visible');
+                    }
+                });
+            }, 100);
+        }
+
+        // Create product card element
+        function createProductCard(product, index) {
+            const card = document.createElement('div');
+            card.className = 'product-card bg-white rounded-xl shadow-lg overflow-hidden';
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            const isFast = product.keterangan && product.keterangan.toLowerCase() === 'fast';
+            
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${product.gambar}" alt="${product.nama}" class="w-full h-48 object-cover lazy-image" loading="lazy">
+                    ${isFast ? '<span class="absolute top-2 right-2 bg-yellow-400 text-gray-800 px-2 py-1 rounded-full text-xs font-bold">Kilat</span>' : ''}
+                </div>
+                <div class="p-4 text-center">
+                    <span class="inline-block accent-bg text-white text-xs px-3 py-1 rounded-full mb-2">${product.kategori}</span>
+                    <h3 class="font-bold text-lg mb-4">${product.nama}</h3>
+                    <div class="flex gap-2">
+                        <a href="${product.preview}" target="_blank" class="flex-1 accent-bg text-white px-4 py-2 rounded-full hover:accent-hover-reverse transition-colors text-sm font-medium">
+                            Lihat Preview
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Filter products based on category and search
+        function filterProducts() {
+            return products.filter(product => {
+                const matchesCategory = currentCategory === 'all' || product.kategori === currentCategory;
+                const matchesSearch = product.nama.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-pill').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderProducts();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function(e) {
+                searchTerm = e.target.value;
+                renderProducts();
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Scroll animations
+            window.addEventListener('scroll', handleScroll);
+        }
+
+        // Handle scroll events
+        function handleScroll() {
+            // Animate product cards when they come into view
+            document.querySelectorAll('.product-card:not(.visible)').forEach(card => {
+                if (isElementInViewport(card)) {
+                    card.classList.add('visible');
+                }
+            });
+        }
+
+        // Check if element is in viewport
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Setup lazy loading for images
+        function setupLazyLoading() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
